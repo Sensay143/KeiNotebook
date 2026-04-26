@@ -1,11 +1,54 @@
+# K.E.I Notebook
 
-  # Community Quiz Sharing App UI
+A community-based quiz sharing platform for students.
 
-  This is a code bundle for Community Quiz Sharing App UI. The original project is available at https://www.figma.com/design/BHJw6lPpLhK0nOVX2WpE7C/Community-Quiz-Sharing-App-UI.
+## Setup Instructions
 
-  ## Running the code
+### 1. Install Dependencies
 
-  Run `npm i` to install the dependencies.
+Using **pnpm** (recommended):
+```bash
+pnpm install
+```
 
-  Run `npm run dev` to start the development server.
-  
+Or using **npm**:
+```bash
+npm install
+```
+
+### 2. Run Development Server
+
+Using **pnpm**:
+```bash
+pnpm dev
+```
+
+Or using **npm**:
+```bash
+npm run dev
+```
+
+### 3. Open in Browser
+
+The app will be running at:
+```
+http://localhost:5173
+```
+
+## Features
+
+- **Create Notebooks**: Build quizzes, flashcards, notes, and summaries
+- **Community Sharing**: Share and download materials from other users
+- **Study Rooms**: Join live study sessions
+- **Offline Support**: Download materials for offline access
+- **Guest Mode**: Use without an account (limited features)
+- **Responsive Design**: Works on both mobile and desktop
+
+## Tech Stack
+
+- React 18
+- TypeScript
+- React Router 7
+- Tailwind CSS 4
+- Vite 6
+- Lucide Icons
