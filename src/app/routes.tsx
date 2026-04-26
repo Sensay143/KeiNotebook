@@ -27,6 +27,7 @@ export const router = createBrowserRouter([
     Component: Layout,
     children: [
       { index: true, Component: ResponsiveHome },
+      { path: "onboarding", Component: OnboardingScreen },
       { path: "auth", Component: AuthScreen },
       { path: "home", Component: ResponsiveHome },
       { path: "search", Component: SearchScreen },
