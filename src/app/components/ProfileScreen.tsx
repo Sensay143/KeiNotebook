@@ -23,41 +23,39 @@ export function ProfileScreen() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 max-w-md lg:max-w-full mx-auto">
-      <div className="bg-gradient-to-r from-blue-500 to-green-400 p-6 pb-12 lg:pb-16 lg:rounded-b-3xl shadow-lg">
-        <div className="lg:max-w-6xl lg:mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <button onClick={() => navigate("/home")} className="p-2 hover:bg-white/20 rounded-full transition-colors">
-              <ChevronLeft className="w-6 h-6 text-white" />
-            </button>
-            <button className="p-2 hover:bg-white/20 rounded-full transition-colors">
-              <Settings className="w-6 h-6 text-white" />
-            </button>
-          </div>
+    <div className="min-h-screen bg-gray-50 pb-20">
+      <div className="bg-gradient-to-r from-blue-500 to-green-400 p-6 pb-12 shadow-lg">
+        <div className="flex items-center justify-between mb-6">
+          <button onClick={() => navigate("/home")} className="p-2 hover:bg-white/20 rounded-full transition-colors">
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+          <button className="p-2 hover:bg-white/20 rounded-full transition-colors">
+            <Settings className="w-6 h-6 text-white" />
+          </button>
+        </div>
 
-          <div className="text-center">
-            <div className="w-24 h-24 lg:w-32 lg:h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-              {isGuest ? (
-                <UserCircle className="w-16 h-16 lg:w-20 lg:h-20 text-gray-400" />
-              ) : (
-                <span className="text-3xl lg:text-5xl">👤</span>
-              )}
-            </div>
-            <h1 className="text-2xl lg:text-3xl text-white mb-1">
-              {isGuest ? "Guest User" : user?.nickname || "User"}
-            </h1>
-            {!isGuest && user && (
-              <p className="text-white/80 lg:text-lg">{user.email}</p>
-            )}
-            {isGuest && (
-              <p className="text-white/80 text-sm lg:text-base">Limited features • Offline only</p>
+        <div className="text-center">
+          <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+            {isGuest ? (
+              <UserCircle className="w-16 h-16 text-gray-400" />
+            ) : (
+              <span className="text-3xl">👤</span>
             )}
           </div>
+          <h1 className="text-2xl text-white mb-1">
+            {isGuest ? "Guest User" : user?.nickname || "User"}
+          </h1>
+          {!isGuest && user && (
+            <p className="text-white/80">{user.email}</p>
+          )}
+          {isGuest && (
+            <p className="text-white/80 text-sm">Limited features • Offline only</p>
+          )}
         </div>
       </div>
 
-      <div className="px-4 lg:px-8 -mt-8 lg:-mt-12 space-y-4 lg:max-w-6xl lg:mx-auto lg:grid lg:grid-cols-3 lg:gap-6 lg:space-y-0">
-        <div className="bg-white rounded-2xl p-6 shadow-lg lg:col-span-3">
+      <div className="px-4 -mt-8 space-y-4">
+        <div className="bg-white rounded-2xl p-6 shadow-lg">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
               <div className="text-2xl text-blue-600 mb-1">12</div>
@@ -74,7 +72,7 @@ export function ProfileScreen() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm lg:col-span-3">
+        <div className="bg-white rounded-2xl p-4 shadow-sm">
           <div className="flex items-center gap-2 mb-4">
             <Award className="w-5 h-5 text-blue-600" />
             <h2 className="text-gray-800">Achievements</h2>
@@ -92,7 +90,7 @@ export function ProfileScreen() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm lg:col-span-2">
+        <div className="bg-white rounded-2xl p-4 shadow-sm">
           <h2 className="text-gray-800 mb-4">My Quizzes</h2>
           {myQuizzes && myQuizzes.length > 0 ? (
             <div className="space-y-3">
@@ -120,7 +118,7 @@ export function ProfileScreen() {
         </div>
 
         {!isGuest && privateQuizPins.length > 0 && (
-          <div className="bg-white rounded-2xl p-4 shadow-sm lg:row-span-2">
+          <div className="bg-white rounded-2xl p-4 shadow-sm">
             <div className="flex items-center gap-2 mb-4">
               <Lock className="w-5 h-5 text-purple-600" />
               <h2 className="text-gray-800">Private Quiz PINs</h2>

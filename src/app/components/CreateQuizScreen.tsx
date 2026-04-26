@@ -51,165 +51,155 @@ export function CreateQuizScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 max-w-md lg:max-w-full mx-auto">
-      <div className="bg-gradient-to-r from-blue-500 to-green-400 p-4 lg:p-6 shadow-lg">
-        <div className="lg:max-w-6xl lg:mx-auto">
-          <div className="flex items-center gap-3">
-            <button onClick={() => navigate("/create-notebook")} className="p-2 hover:bg-white/20 rounded-full transition-colors">
-              <ChevronLeft className="w-6 h-6 text-white" />
-            </button>
-            <div className="flex-1">
-              <h1 className="text-xl lg:text-2xl text-white">Create Quiz</h1>
-              <p className="text-sm text-white/80 hidden lg:block">Build your quiz with multiple question types</p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-gray-50 pb-20">
+      <div className="bg-gradient-to-r from-blue-500 to-green-400 p-4 shadow-lg">
+        <div className="flex items-center gap-3">
+          <button onClick={() => navigate("/create-notebook")} className="p-2 hover:bg-white/20 rounded-full transition-colors">
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+          <h1 className="text-xl text-white">Create Quiz</h1>
         </div>
       </div>
 
-      <div className="p-4 lg:p-8 space-y-4 lg:max-w-6xl lg:mx-auto">
-        <div className="lg:grid lg:grid-cols-3 lg:gap-6 lg:space-y-0 space-y-4">
-          <div className="bg-white rounded-2xl p-4 shadow-sm lg:col-span-2">
-            <label className="text-sm text-gray-600 mb-2 block">Quiz Title</label>
+      <div className="p-4 space-y-4">
+        <div className="bg-white rounded-2xl p-4 shadow-sm">
+          <label className="text-sm text-gray-600 mb-2 block">Quiz Title</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter quiz title..."
+            className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
+          <label className="text-sm text-gray-600 mb-2 block">Subject Category</label>
+          <select
+            value={subject}
+            onChange={(e) => {
+              setSubject(e.target.value);
+              if (e.target.value !== "custom") setCustomSubject("");
+            }}
+            className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Select subject...</option>
+            <option value="logic">Logic</option>
+            <option value="programming">Programming</option>
+            <option value="psychology">Psychology</option>
+            <option value="biological">Biological</option>
+            <option value="aerospace">Aerospace</option>
+            <option value="others">Others</option>
+            <option value="custom">Type your own...</option>
+          </select>
+          {subject === "custom" && (
             <input
               type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter quiz title..."
+              value={customSubject}
+              onChange={(e) => setCustomSubject(e.target.value)}
+              placeholder="Enter custom subject..."
               className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
+          )}
+        </div>
 
+        {isGuest && (
+          <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-4 flex gap-3">
+            <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm text-orange-900">Guest Mode</p>
+              <p className="text-xs text-orange-700 mt-1">
+                You can only share quizzes offline. Create an account to upload publicly.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {!isGuest && (
+          <div className="bg-white rounded-2xl p-4 shadow-sm">
+            <label className="text-sm text-gray-600 mb-3 block">Visibility</label>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setVisibility("public")}
+                className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
+                  visibility === "public"
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                Public
+              </button>
+              <button
+                onClick={() => setVisibility("anonymous")}
+                className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
+                  visibility === "anonymous"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                Anonymous
+              </button>
+              <button
+                onClick={() => setVisibility("private")}
+                className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
+                  visibility === "private"
+                    ? "bg-purple-500 text-white"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                <div className="flex items-center justify-center gap-1">
+                  <Lock className="w-4 h-4" />
+                  Private
+                </div>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {!isGuest && visibility === "private" && (
           <div className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
-            <label className="text-sm text-gray-600 mb-2 block">Subject Category</label>
-            <select
-              value={subject}
-              onChange={(e) => {
-                setSubject(e.target.value);
-                if (e.target.value !== "custom") setCustomSubject("");
-              }}
-              className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select subject...</option>
-              <option value="logic">Logic</option>
-              <option value="programming">Programming</option>
-              <option value="psychology">Psychology</option>
-              <option value="biological">Biological</option>
-              <option value="aerospace">Aerospace</option>
-              <option value="others">Others</option>
-              <option value="custom">Type your own...</option>
-            </select>
-            {subject === "custom" && (
+            <div>
+              <label className="text-sm text-gray-600 mb-2 block">Passcode</label>
               <input
                 type="text"
-                value={customSubject}
-                onChange={(e) => setCustomSubject(e.target.value)}
-                placeholder="Enter custom subject..."
-                className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                value={passcode}
+                onChange={(e) => setPasscode(e.target.value)}
+                placeholder="Enter 4-digit passcode..."
+                maxLength={4}
+                className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500"
               />
+            </div>
+            <button
+              onClick={() => setShowQR(!showQR)}
+              className="flex items-center gap-2 text-purple-600 text-sm"
+            >
+              <QrCode className="w-4 h-4" />
+              {showQR ? "Hide QR Code" : "Generate QR Code"}
+            </button>
+            {showQR && (
+              <div className="bg-gray-100 p-6 rounded-xl flex items-center justify-center">
+                <div className="w-32 h-32 bg-white rounded-xl flex items-center justify-center">
+                  <QrCode className="w-24 h-24 text-gray-400" />
+                </div>
+              </div>
             )}
           </div>
-        </div>
+        )}
 
-        <div className="lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0 space-y-4">
-          {isGuest && (
-            <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-4 flex gap-3 lg:col-span-2">
-              <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-sm text-orange-900">Guest Mode</p>
-                <p className="text-xs text-orange-700 mt-1">
-                  You can only share quizzes offline. Create an account to upload publicly.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {!isGuest && (
-            <div className="bg-white rounded-2xl p-4 shadow-sm">
-              <label className="text-sm text-gray-600 mb-3 block">Visibility</label>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setVisibility("public")}
-                  className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
-                    visibility === "public"
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-100 text-gray-600"
-                  }`}
-                >
-                  Public
-                </button>
-                <button
-                  onClick={() => setVisibility("anonymous")}
-                  className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
-                    visibility === "anonymous"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-100 text-gray-600"
-                  }`}
-                >
-                  Anonymous
-                </button>
-                <button
-                  onClick={() => setVisibility("private")}
-                  className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
-                    visibility === "private"
-                      ? "bg-purple-500 text-white"
-                      : "bg-gray-100 text-gray-600"
-                  }`}
-                >
-                  <div className="flex items-center justify-center gap-1">
-                    <Lock className="w-4 h-4" />
-                    Private
-                  </div>
-                </button>
-              </div>
-            </div>
-          )}
-
-          {!isGuest && visibility === "private" && (
-            <div className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
-              <div>
-                <label className="text-sm text-gray-600 mb-2 block">Passcode</label>
-                <input
-                  type="text"
-                  value={passcode}
-                  onChange={(e) => setPasscode(e.target.value)}
-                  placeholder="Enter 4-digit passcode..."
-                  maxLength={4}
-                  className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
-              <button
-                onClick={() => setShowQR(!showQR)}
-                className="flex items-center gap-2 text-purple-600 text-sm"
-              >
-                <QrCode className="w-4 h-4" />
-                {showQR ? "Hide QR Code" : "Generate QR Code"}
-              </button>
-              {showQR && (
-                <div className="bg-gray-100 p-6 rounded-xl flex items-center justify-center">
-                  <div className="w-32 h-32 bg-white rounded-xl flex items-center justify-center">
-                    <QrCode className="w-24 h-24 text-gray-400" />
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
-        <div className="space-y-3 lg:col-span-3">
+        <div className="space-y-3">
           <div className="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm">
-            <h2 className="text-lg lg:text-xl text-gray-800">Questions</h2>
+            <h2 className="text-lg text-gray-800">Questions</h2>
             <button
               onClick={() => addQuestion("multiple-choice")}
               className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors text-sm"
             >
               <Plus className="w-4 h-4" />
-              Add Question
+              Add
             </button>
           </div>
 
-          <div className="lg:grid lg:grid-cols-2 lg:gap-4 space-y-3 lg:space-y-0">
           {questions.map((q, qIndex) => (
-            <div key={qIndex} className="bg-white rounded-2xl p-4 lg:p-6 shadow-sm space-y-3">
+            <div key={qIndex} className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Question {qIndex + 1}</span>
                 <div className="flex items-center gap-2">
@@ -289,10 +279,9 @@ export function CreateQuizScreen() {
               )}
             </div>
           ))}
-          </div>
         </div>
 
-        <div className="lg:col-span-3 flex gap-3 pt-4 bg-white lg:bg-transparent p-4 lg:p-0 lg:sticky lg:bottom-8">
+        <div className="flex gap-3 pt-4">
           <button
             onClick={() => {
               if (!isGuest && visibility === "private" && passcode && title) {

@@ -21,48 +21,46 @@ export function YourNotebookScreen() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 max-w-md lg:max-w-full mx-auto">
-      <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 lg:p-8 shadow-lg">
-        <div className="lg:max-w-6xl lg:mx-auto">
-          <div className="flex items-center gap-3 mb-6">
-            <button onClick={() => navigate("/home")} className="p-2 hover:bg-white/20 rounded-full transition-colors">
-              <ChevronLeft className="w-6 h-6 text-white" />
-            </button>
-            <h1 className="text-2xl lg:text-3xl text-white">Your Notebook</h1>
-          </div>
+    <div className="min-h-screen bg-gray-50 pb-20">
+      <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 shadow-lg">
+        <div className="flex items-center gap-3 mb-6">
+          <button onClick={() => navigate("/home")} className="p-2 hover:bg-white/20 rounded-full transition-colors">
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+          <h1 className="text-2xl text-white">Your Notebook</h1>
+        </div>
 
-          <div className="flex gap-2">
-            <button
-              onClick={() => setActiveTab("quizzes")}
-              className={`px-6 py-2.5 rounded-xl transition-colors ${
-                activeTab === "quizzes"
-                  ? "bg-white text-blue-600"
-                  : "bg-white/20 text-white"
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4" />
-                Quizzes
-              </div>
-            </button>
-            <button
-              onClick={() => setActiveTab("materials")}
-              className={`px-6 py-2.5 rounded-xl transition-colors ${
-                activeTab === "materials"
-                  ? "bg-white text-blue-600"
-                  : "bg-white/20 text-white"
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <Layers className="w-4 h-4" />
-                Study Materials
-              </div>
-            </button>
-          </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setActiveTab("quizzes")}
+            className={`px-6 py-2.5 rounded-xl transition-colors ${
+              activeTab === "quizzes"
+                ? "bg-white text-blue-600"
+                : "bg-white/20 text-white"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4" />
+              Quizzes
+            </div>
+          </button>
+          <button
+            onClick={() => setActiveTab("materials")}
+            className={`px-6 py-2.5 rounded-xl transition-colors ${
+              activeTab === "materials"
+                ? "bg-white text-blue-600"
+                : "bg-white/20 text-white"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Layers className="w-4 h-4" />
+              Study Materials
+            </div>
+          </button>
         </div>
       </div>
 
-      <div className="p-4 lg:p-8 lg:max-w-6xl lg:mx-auto space-y-3 lg:grid lg:grid-cols-2 xl:grid-cols-3 lg:gap-4 lg:space-y-0">
+      <div className="p-4 space-y-3">
         {activeTab === "quizzes" ? (
           myQuizzes.length > 0 ? (
             myQuizzes.map((quiz) => (

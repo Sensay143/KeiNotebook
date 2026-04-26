@@ -41,105 +41,98 @@ export function CreateStudyMaterialScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 max-w-md lg:max-w-full mx-auto">
-      <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-4 lg:p-6 shadow-lg">
-        <div className="lg:max-w-6xl lg:mx-auto">
-          <div className="flex items-center gap-3">
-            <button onClick={() => navigate("/create-notebook")} className="p-2 hover:bg-white/20 rounded-full transition-colors">
-              <ChevronLeft className="w-6 h-6 text-white" />
-            </button>
-            <div className="flex-1">
-              <h1 className="text-xl lg:text-2xl text-white">Create Study Material</h1>
-              <p className="text-sm text-white/80 hidden lg:block">Build flashcards, notes, and summaries</p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-gray-50 pb-20">
+      <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-4 shadow-lg">
+        <div className="flex items-center gap-3">
+          <button onClick={() => navigate("/create-notebook")} className="p-2 hover:bg-white/20 rounded-full transition-colors">
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+          <h1 className="text-xl text-white">Create Study Material</h1>
         </div>
       </div>
 
-      <div className="p-4 lg:p-8 space-y-4 lg:max-w-6xl lg:mx-auto">
-        <div className="lg:grid lg:grid-cols-3 lg:gap-6 lg:space-y-0 space-y-4">
-          <div className="bg-white rounded-2xl p-4 shadow-sm lg:col-span-2">
-            <label className="text-sm text-gray-600 mb-2 block">Notebook Title</label>
+      <div className="p-4 space-y-4">
+        <div className="bg-white rounded-2xl p-4 shadow-sm">
+          <label className="text-sm text-gray-600 mb-2 block">Notebook Title</label>
+          <input
+            type="text"
+            value={notebookTitle}
+            onChange={(e) => setNotebookTitle(e.target.value)}
+            placeholder="Enter notebook title..."
+            className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
+
+        <div className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
+          <label className="text-sm text-gray-600 mb-2 block">Subject Category</label>
+          <select
+            value={subject}
+            onChange={(e) => {
+              setSubject(e.target.value);
+              if (e.target.value !== "custom") setCustomSubject("");
+            }}
+            className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500"
+          >
+            <option value="">Select subject...</option>
+            <option value="logic">Logic</option>
+            <option value="programming">Programming</option>
+            <option value="psychology">Psychology</option>
+            <option value="biological">Biological</option>
+            <option value="aerospace">Aerospace</option>
+            <option value="others">Others</option>
+            <option value="custom">Type your own...</option>
+          </select>
+          {subject === "custom" && (
             <input
               type="text"
-              value={notebookTitle}
-              onChange={(e) => setNotebookTitle(e.target.value)}
-              placeholder="Enter notebook title..."
+              value={customSubject}
+              onChange={(e) => setCustomSubject(e.target.value)}
+              placeholder="Enter custom subject..."
               className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500"
             />
-          </div>
+          )}
+        </div>
 
-          <div className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
-            <label className="text-sm text-gray-600 mb-2 block">Subject Category</label>
-            <select
-              value={subject}
-              onChange={(e) => {
-                setSubject(e.target.value);
-                if (e.target.value !== "custom") setCustomSubject("");
-              }}
-              className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500"
+        <div className="bg-white rounded-2xl p-4 shadow-sm">
+          <label className="text-sm text-gray-600 mb-3 block">Material Type</label>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setMaterialType("flashcards")}
+              className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
+                materialType === "flashcards"
+                  ? "bg-purple-500 text-white"
+                  : "bg-gray-100 text-gray-600"
+              }`}
             >
-              <option value="">Select subject...</option>
-              <option value="logic">Logic</option>
-              <option value="programming">Programming</option>
-              <option value="psychology">Psychology</option>
-              <option value="biological">Biological</option>
-              <option value="aerospace">Aerospace</option>
-              <option value="others">Others</option>
-              <option value="custom">Type your own...</option>
-            </select>
-            {subject === "custom" && (
-              <input
-                type="text"
-                value={customSubject}
-                onChange={(e) => setCustomSubject(e.target.value)}
-                placeholder="Enter custom subject..."
-                className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500"
-              />
-            )}
-          </div>
-
-          <div className="bg-white rounded-2xl p-4 shadow-sm lg:col-span-3">
-            <label className="text-sm text-gray-600 mb-3 block">Material Type</label>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setMaterialType("flashcards")}
-                className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
-                  materialType === "flashcards"
-                    ? "bg-purple-500 text-white"
-                    : "bg-gray-100 text-gray-600"
-                }`}
-              >
-                Flashcards
-              </button>
-              <button
-                onClick={() => setMaterialType("notes")}
-                className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
-                  materialType === "notes"
-                    ? "bg-purple-500 text-white"
-                    : "bg-gray-100 text-gray-600"
-                }`}
-              >
-                Notes
-              </button>
-              <button
-                onClick={() => setMaterialType("summary")}
-                className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
-                  materialType === "summary"
-                    ? "bg-purple-500 text-white"
-                    : "bg-gray-100 text-gray-600"
-                }`}
-              >
-                Summary
-              </button>
-            </div>
+              Flashcards
+            </button>
+            <button
+              onClick={() => setMaterialType("notes")}
+              className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
+                materialType === "notes"
+                  ? "bg-purple-500 text-white"
+                  : "bg-gray-100 text-gray-600"
+              }`}
+            >
+              Notes
+            </button>
+            <button
+              onClick={() => setMaterialType("summary")}
+              className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
+                materialType === "summary"
+                  ? "bg-purple-500 text-white"
+                  : "bg-gray-100 text-gray-600"
+              }`}
+            >
+              Summary
+            </button>
           </div>
         </div>
 
         {materialType === "flashcards" && (
-          <div className="space-y-3 lg:col-span-3">
+          <div className="space-y-3">
             <div className="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm">
-              <h2 className="text-lg lg:text-xl text-gray-800">Flashcards</h2>
+              <h2 className="text-lg text-gray-800">Flashcards</h2>
               <button
                 onClick={addFlashcard}
                 className="flex items-center gap-2 px-4 py-2 bg-purple-500 text-white rounded-xl hover:bg-purple-600 transition-colors text-sm"
@@ -149,9 +142,8 @@ export function CreateStudyMaterialScreen() {
               </button>
             </div>
 
-            <div className="lg:grid lg:grid-cols-2 lg:gap-4 space-y-3 lg:space-y-0">
             {flashcards.map((card, index) => (
-              <div key={index} className="bg-white rounded-2xl p-4 lg:p-6 shadow-sm space-y-3">
+              <div key={index} className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">Card {index + 1}</span>
                   {flashcards.length > 1 && (
@@ -193,14 +185,13 @@ export function CreateStudyMaterialScreen() {
                 </div>
               </div>
             ))}
-            </div>
           </div>
         )}
 
         {(materialType === "notes" || materialType === "summary") && (
-          <div className="space-y-3 lg:col-span-3">
+          <div className="space-y-3">
             <div className="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm">
-              <h2 className="text-lg lg:text-xl text-gray-800">
+              <h2 className="text-lg text-gray-800">
                 {materialType === "notes" ? "Notes" : "Summaries"}
               </h2>
               <button
@@ -212,9 +203,8 @@ export function CreateStudyMaterialScreen() {
               </button>
             </div>
 
-            <div className="lg:grid lg:grid-cols-2 lg:gap-4 space-y-3 lg:space-y-0">
             {notes.map((note, index) => (
-              <div key={index} className="bg-white rounded-2xl p-4 lg:p-6 shadow-sm space-y-3">
+              <div key={index} className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">
                     {materialType === "notes" ? "Note" : "Summary"} {index + 1}
@@ -252,11 +242,10 @@ export function CreateStudyMaterialScreen() {
                 />
               </div>
             ))}
-            </div>
           </div>
         )}
 
-        <div className="lg:col-span-3 flex gap-3 pt-4 bg-white lg:bg-transparent p-4 lg:p-0 lg:sticky lg:bottom-8">
+        <div className="flex gap-3 pt-4">
           <button
             onClick={() => navigate("/home")}
             className="flex-1 bg-white text-gray-700 py-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
