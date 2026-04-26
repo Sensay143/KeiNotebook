@@ -38,7 +38,7 @@ export function HomeScreen() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-24 relative">
       <div className="bg-gradient-to-r from-blue-500 to-green-400 p-6 pb-8 rounded-b-3xl shadow-lg">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl text-white">K.E.I Notebook</h1>
@@ -76,60 +76,60 @@ export function HomeScreen() {
         </div>
       </div>
 
-      <div className="px-6 py-6 space-y-6">
-        <div className="grid grid-cols-3 gap-3">
+      <div className="px-6 py-6 space-y-8">
+        <div className="grid grid-cols-3 sm:flex sm:justify-center gap-3 sm:gap-6">
           <button
             onClick={() => navigate("/downloaded")}
-            className="bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-2"
+            className="bg-white p-4 sm:px-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-2 flex-1 max-w-[200px]"
           >
             <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
               <Download className="w-6 h-6 text-blue-600" />
             </div>
-            <span className="text-xs text-gray-700">Downloads</span>
+            <span className="text-xs sm:text-sm text-gray-700">Downloads</span>
           </button>
           <button
             onClick={() => navigate("/share-quizzes")}
-            className="bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-2"
+            className="bg-white p-4 sm:px-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-2 flex-1 max-w-[200px]"
           >
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
               <Share2 className="w-6 h-6 text-green-600" />
             </div>
-            <span className="text-xs text-gray-700">Share</span>
+            <span className="text-xs sm:text-sm text-gray-700">Share</span>
           </button>
           <button
             onClick={() => navigate("/create")}
-            className="bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-2"
+            className="bg-white p-4 sm:px-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-2 flex-1 max-w-[200px]"
           >
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
               <Plus className="w-6 h-6 text-purple-600" />
             </div>
-            <span className="text-xs text-gray-700">Create</span>
+            <span className="text-xs sm:text-sm text-gray-700">Create</span>
           </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 sm:flex sm:justify-center gap-3 sm:gap-6">
           <button
             onClick={() => navigate("/community")}
-            className="bg-gradient-to-br from-blue-500 to-purple-500 p-4 rounded-2xl shadow-md hover:shadow-lg transition-shadow flex items-center gap-3"
+            className="bg-gradient-to-br from-blue-500 to-purple-500 p-4 sm:px-8 sm:py-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow flex items-center gap-3 flex-1 max-w-[300px]"
           >
-            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shrink-0">
               <MessageCircle className="w-6 h-6 text-white" />
             </div>
             <div className="text-left">
-              <span className="text-sm text-white block">Community</span>
-              <span className="text-xs text-white/80">Discussions</span>
+              <span className="text-sm sm:text-base text-white block font-medium">Community</span>
+              <span className="text-xs sm:text-sm text-white/80">Discussions</span>
             </div>
           </button>
           <button
             onClick={() => navigate("/community-rooms")}
-            className="bg-gradient-to-br from-purple-500 to-pink-500 p-4 rounded-2xl shadow-md hover:shadow-lg transition-shadow flex items-center gap-3"
+            className="bg-gradient-to-br from-purple-500 to-pink-500 p-4 sm:px-8 sm:py-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow flex items-center gap-3 flex-1 max-w-[300px]"
           >
-            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shrink-0">
               <UsersIcon className="w-6 h-6 text-white" />
             </div>
             <div className="text-left">
-              <span className="text-sm text-white block">Study Rooms</span>
-              <span className="text-xs text-white/80">Join live</span>
+              <span className="text-sm sm:text-base text-white block font-medium">Study Rooms</span>
+              <span className="text-xs sm:text-sm text-white/80">Join live</span>
             </div>
           </button>
         </div>
@@ -186,8 +186,8 @@ export function HomeScreen() {
         )}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4">
-        <div className="max-w-md mx-auto flex justify-around">
+      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-6 py-4 z-50">
+        <div className="max-w-7xl mx-auto flex justify-around sm:justify-center sm:gap-24 md:gap-32">
           <button className="flex flex-col items-center gap-1 text-blue-600">
             <BookOpen className="w-6 h-6" />
             <span className="text-xs">Home</span>

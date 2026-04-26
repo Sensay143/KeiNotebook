@@ -46,9 +46,9 @@ export function CommunityDetailScreen() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 shadow-lg">
-        <div className="max-w-4xl mx-auto">
+        <div>
           <div className="flex items-center gap-3 mb-4">
             <button onClick={() => navigate("/community")} className="p-2 hover:bg-white/20 rounded-full">
               <ChevronLeft className="w-6 h-6 text-white" />
@@ -64,7 +64,7 @@ export function CommunityDetailScreen() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="p-6">
         {!isGuest && (
           <div className="bg-white rounded-2xl p-4 shadow-sm mb-6">
             <textarea

@@ -45,9 +45,9 @@ export function CommunityScreen() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 shadow-lg">
-        <div className="max-w-6xl mx-auto">
+        <div>
           <div className="flex items-center gap-3 mb-6">
             <button onClick={() => navigate("/home")} className="p-2 hover:bg-white/20 rounded-full">
               <ChevronLeft className="w-6 h-6 text-white" />
@@ -55,7 +55,7 @@ export function CommunityScreen() {
             <h1 className="text-2xl text-white">Community Discussions</h1>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 overflow-x-auto pb-2 -mx-6 px-6 no-scrollbar">
             <button
               onClick={() => setActiveTab("trending")}
               className={`px-6 py-2.5 rounded-xl transition-colors ${
@@ -93,7 +93,7 @@ export function CommunityScreen() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto p-6 space-y-4">
+      <div className="p-6 space-y-4">
         {isGuest && (
           <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-4">
             <p className="text-orange-900 text-sm">
@@ -130,7 +130,7 @@ export function CommunityScreen() {
               </button>
             </div>
 
-            <div className="flex gap-6 text-sm text-gray-600">
+            <div className="flex flex-wrap gap-4 text-xs text-gray-600">
               <div className="flex items-center gap-1.5">
                 <Users className="w-4 h-4" />
                 <span>{community.members.toLocaleString()} members</span>

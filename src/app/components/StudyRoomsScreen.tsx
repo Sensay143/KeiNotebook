@@ -45,9 +45,9 @@ export function StudyRoomsScreen() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6 shadow-lg">
-        <div className="max-w-6xl mx-auto">
+        <div>
           <div className="flex items-center gap-3 mb-6">
             <button onClick={() => navigate("/home")} className="p-2 hover:bg-white/20 rounded-full">
               <ChevronLeft className="w-6 h-6 text-white" />
@@ -55,7 +55,7 @@ export function StudyRoomsScreen() {
             <h1 className="text-2xl text-white">Study Rooms</h1>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 -mx-6 px-6 no-scrollbar">
             <button
               onClick={() => setActiveTab("active")}
               className={`px-6 py-2.5 rounded-xl transition-colors ${
@@ -100,7 +100,7 @@ export function StudyRoomsScreen() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto p-6">
+      <div className="p-6">
         {isGuest && (
           <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-4 mb-6">
             <p className="text-orange-900 text-sm">
@@ -109,7 +109,7 @@ export function StudyRoomsScreen() {
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="flex flex-col gap-4">
           {activeRooms.map((room) => (
             <div
               key={room.id}

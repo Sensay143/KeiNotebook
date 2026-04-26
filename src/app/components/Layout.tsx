@@ -1,20 +1,14 @@
-import { Outlet, useLocation } from "react-router";
+import { Outlet } from "react-router";
 import { ErrorBoundary } from "./ErrorBoundary";
 
 export function Layout() {
-  const location = useLocation();
-  const isDesktopRoute = location.pathname === "/home" || location.pathname === "/";
-  const isAdaptiveRoute =
-    location.pathname.startsWith("/create") ||
-    location.pathname.startsWith("/your-notebook") ||
-    location.pathname.startsWith("/profile");
-  const isFullWidth = location.pathname.startsWith("/community") || isDesktopRoute || isAdaptiveRoute;
-
   return (
-    <div className={`min-h-screen ${isDesktopRoute ? "bg-white" : "bg-gradient-to-br from-blue-50 via-green-50 to-blue-50"}`}>
-      <div className={`${isFullWidth ? "w-full" : "max-w-md mx-auto bg-white"} min-h-screen ${isFullWidth ? "" : "shadow-2xl"}`}>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="flex-1 w-full max-w-7xl mx-auto bg-white min-h-screen relative flex flex-col shadow-xl">
         <ErrorBoundary>
-          <Outlet />
+          <div className="flex-1 flex flex-col">
+            <Outlet />
+          </div>
         </ErrorBoundary>
       </div>
     </div>
