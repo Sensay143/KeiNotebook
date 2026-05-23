@@ -1,12 +1,34 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { Download, Share2, Plus, Globe, Radio, BookOpen, Trophy, User, Users as UsersIcon, MessageCircle } from "lucide-react";
+import { Download, Share2, Plus, Globe, Radio, BookOpen, Trophy, User, Users as UsersIcon, MessageCircle, Database } from "lucide-react";
 import { QuizCard } from "./QuizCard";
 import { useAuth } from "../context/AuthContext";
+
+// --- NEW: Define what our Database data looks like ---
+interface DbQuiz {
+  id: number;
+  title: string;
+  subject: string;
+}
 
 export function HomeScreen() {
   const navigate = useNavigate();
   const { isGuest } = useAuth();
   const isOnline = true;
+
+  // --- NEW: State to hold our XAMPP database quizzes ---
+  const [dbQuizzes, setDbQuizzes] = useState<DbQuiz[]>([]);
+
+  // --- NEW: Fetch data from Python FastAPI when screen loads ---
+  useEffect(() => {
+    fetch("http://localhost:8000/api/quizzes")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data loaded from Python/XAMPP:", data);
+        setDbQuizzes(data);
+      })
+      .catch((error) => console.error("Error loading quizzes:", error));
+  }, []);
 
   const offlineQuizzes = [
     {
@@ -39,7 +61,7 @@ export function HomeScreen() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24 relative">
-      <div className="bg-gradient-to-r from-blue-500 to-green-400 p-6 pb-8 rounded-b-3xl shadow-lg">
+      <div className="bg-gradient-to-r from-blue-500 to-green-400 p-10 pb-12 rounded-b-[40px] shadow-lg">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl text-white">K.E.I Notebook</h1>
           <div className="flex items-center gap-2">
@@ -157,6 +179,34 @@ export function HomeScreen() {
             </div>
           )}
         </div>
+
+        {/* --- NEW: LIVE DATABASE SECTION --- */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <Database className="w-5 h-5 text-blue-500" />
+            <h2 className="text-lg text-gray-800">Your Notebook</h2>
+          </div>
+          {dbQuizzes && dbQuizzes.length > 0 ? (
+            <div className="space-y-3">
+              {dbQuizzes.map((quiz) => (
+                <QuizCard
+                  key={`db-${quiz.id}`}
+                  title={quiz.title}
+                  subject={quiz.subject}
+                  creator="Server DB"
+                  visibility="public"
+                  downloaded={false}
+                  onClick={() => navigate(`/quiz/${quiz.id}`)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl p-6 text-center text-gray-500">
+              <p className="animate-pulse">Loading from API...</p>
+            </div>
+          )}
+        </div>
+        {/* --- END LIVE DATABASE SECTION --- */}
 
         {isOnline && (
           <div>

@@ -40,6 +40,54 @@ export function CreateStudyMaterialScreen() {
     setNotes(notes.filter((_, i) => i !== index));
   };
 
+  const handleSaveMaterial = async () => {
+    if (!notebookTitle || !subject) {
+      alert("Please enter a title and select a subject!");
+      return;
+    }
+
+    const finalSubject = subject === "custom" ? customSubject : subject;
+
+    const newLocalMaterial = {
+      id: Date.now().toString(),
+      title: notebookTitle,
+      type: materialType === "flashcards" ? "Flashcards" : materialType === "notes" ? "Notes" : "Summary",
+      subject: finalSubject,
+      cards: materialType === "flashcards" ? flashcards.length : notes.length 
+    };
+
+    const existingMaterials = JSON.parse(localStorage.getItem("notebook_materials") || "[]");
+    localStorage.setItem("notebook_materials", JSON.stringify([...existingMaterials, newLocalMaterial]));
+
+    try {
+      const formData = new FormData();
+      formData.append("title", notebookTitle);
+      formData.append("subject", finalSubject);
+      formData.append("materialType", materialType);
+
+      if (materialType === "flashcards") {
+        formData.append("content", JSON.stringify(flashcards));
+      } else {
+        formData.append("content", JSON.stringify(notes));
+      }
+
+      const response = await fetch("http://localhost:8000/api/quizzes", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        navigate("/your-notebook");
+      } else {
+        alert("Failed to save to database. Check your Python terminal for errors!");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Cannot connect to server, but your material was saved locally to your notebook!");
+      navigate("/your-notebook");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-4 shadow-lg">
@@ -96,36 +144,19 @@ export function CreateStudyMaterialScreen() {
         <div className="bg-white rounded-2xl p-4 shadow-sm">
           <label className="text-sm text-gray-600 mb-3 block">Material Type</label>
           <div className="flex gap-2">
-            <button
-              onClick={() => setMaterialType("flashcards")}
-              className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
-                materialType === "flashcards"
-                  ? "bg-purple-500 text-white"
-                  : "bg-gray-100 text-gray-600"
-              }`}
-            >
-              Flashcards
-            </button>
-            <button
-              onClick={() => setMaterialType("notes")}
-              className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
-                materialType === "notes"
-                  ? "bg-purple-500 text-white"
-                  : "bg-gray-100 text-gray-600"
-              }`}
-            >
-              Notes
-            </button>
-            <button
-              onClick={() => setMaterialType("summary")}
-              className={`flex-1 py-2.5 rounded-xl text-sm transition-colors ${
-                materialType === "summary"
-                  ? "bg-purple-500 text-white"
-                  : "bg-gray-100 text-gray-600"
-              }`}
-            >
-              Summary
-            </button>
+            {(["flashcards", "notes", "summary"] as MaterialType[]).map((type) => (
+              <button
+                key={type}
+                onClick={() => setMaterialType(type)}
+                className={`flex-1 py-2.5 rounded-xl text-sm capitalize transition-colors ${
+                  materialType === type
+                    ? "bg-purple-500 text-white"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                {type}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -155,34 +186,28 @@ export function CreateStudyMaterialScreen() {
                     </button>
                   )}
                 </div>
-                <div>
-                  <label className="text-xs text-gray-500 block mb-2">Front (Question/Term)</label>
-                  <input
-                    type="text"
-                    value={card.front}
-                    onChange={(e) => {
-                      const newCards = [...flashcards];
-                      newCards[index].front = e.target.value;
-                      setFlashcards(newCards);
-                    }}
-                    placeholder="Enter term or question..."
-                    className="w-full px-4 py-3 bg-purple-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-gray-500 block mb-2">Back (Answer/Definition)</label>
-                  <textarea
-                    value={card.back}
-                    onChange={(e) => {
-                      const newCards = [...flashcards];
-                      newCards[index].back = e.target.value;
-                      setFlashcards(newCards);
-                    }}
-                    placeholder="Enter definition or answer..."
-                    className="w-full px-4 py-3 bg-purple-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 resize-none"
-                    rows={3}
-                  />
-                </div>
+                <input
+                  type="text"
+                  value={card.front}
+                  onChange={(e) => {
+                    const newCards = [...flashcards];
+                    newCards[index].front = e.target.value;
+                    setFlashcards(newCards);
+                  }}
+                  placeholder="Front (Question/Term)"
+                  className="w-full px-4 py-3 bg-purple-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500"
+                />
+                <textarea
+                  value={card.back}
+                  onChange={(e) => {
+                    const newCards = [...flashcards];
+                    newCards[index].back = e.target.value;
+                    setFlashcards(newCards);
+                  }}
+                  placeholder="Back (Answer/Definition)"
+                  className="w-full px-4 py-3 bg-purple-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                  rows={3}
+                />
               </div>
             ))}
           </div>
@@ -199,16 +224,14 @@ export function CreateStudyMaterialScreen() {
                 className="flex items-center gap-2 px-4 py-2 bg-purple-500 text-white rounded-xl hover:bg-purple-600 transition-colors text-sm"
               >
                 <Plus className="w-4 h-4" />
-                Add {materialType === "notes" ? "Note" : "Summary"}
+                Add Item
               </button>
             </div>
 
             {notes.map((note, index) => (
               <div key={index} className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">
-                    {materialType === "notes" ? "Note" : "Summary"} {index + 1}
-                  </span>
+                  <span className="text-sm text-gray-600">Entry {index + 1}</span>
                   {notes.length > 1 && (
                     <button
                       onClick={() => removeNote(index)}
@@ -236,7 +259,7 @@ export function CreateStudyMaterialScreen() {
                     newNotes[index].content = e.target.value;
                     setNotes(newNotes);
                   }}
-                  placeholder={`Write your ${materialType}...`}
+                  placeholder={`Write your content here...`}
                   className="w-full px-4 py-3 bg-purple-50 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                   rows={8}
                 />
@@ -247,7 +270,7 @@ export function CreateStudyMaterialScreen() {
 
         <div className="flex gap-3 pt-4">
           <button
-            onClick={() => navigate("/home")}
+            onClick={handleSaveMaterial}
             className="flex-1 bg-white text-gray-700 py-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
           >
             {isGuest ? "Save Locally" : "Save & Upload"}

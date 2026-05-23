@@ -50,6 +50,52 @@ export function CreateQuizScreen() {
     setQuestions(newQuestions);
   };
 
+  const handleSaveQuiz = async () => {
+    if (!title || !subject) {
+      alert("Please enter a title and select a subject!");
+      return;
+    }
+
+    const finalSubject = subject === "custom" ? customSubject : subject;
+    
+    const newLocalQuiz = {
+      id: Date.now().toString(),
+      title: title,
+      subject: finalSubject,
+      questions: questions.length,
+      downloads: 0
+    };
+
+    const existingQuizzes = JSON.parse(localStorage.getItem("notebook_quizzes") || "[]");
+    localStorage.setItem("notebook_quizzes", JSON.stringify([...existingQuizzes, newLocalQuiz]));
+
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("subject", finalSubject);
+      formData.append("content", JSON.stringify(questions));
+      formData.append("materialType", "quiz");
+
+      const response = await fetch("http://localhost:8000/api/quizzes", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        if (!isGuest && visibility === "private" && passcode && title) {
+          addPrivateQuizPin({ id: Date.now().toString(), title, pin: passcode });
+        }
+        navigate("/your-notebook");
+      } else {
+        alert("Failed to save to database. Check terminal!");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Cannot connect to server, but your quiz was saved locally to your notebook!");
+      navigate("/your-notebook");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <div className="bg-gradient-to-r from-blue-500 to-green-400 p-4 shadow-lg">
@@ -249,15 +295,28 @@ export function CreateQuizScreen() {
                         setQuestions(newQuestions);
                       }}
                       placeholder={`Option ${oIndex + 1}`}
-                      className="w-full px-4 py-2 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      className="w-full px-4 py-2 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   ))}
+                  <label className="text-xs text-gray-500 block mt-2">Correct Option Number (1-4):</label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="4"
+                    value={Number(q.correctAnswer) + 1}
+                    onChange={(e) => {
+                      const newQuestions = [...questions];
+                      newQuestions[qIndex].correctAnswer = Number(e.target.value) - 1;
+                      setQuestions(newQuestions);
+                    }}
+                    className="w-full px-4 py-2 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                  />
                 </div>
               )}
 
               {q.type === "identification" && (
-                <div>
-                  <label className="text-xs text-gray-500 block mb-2">Correct Answer:</label>
+                <div className="space-y-2">
+                  <label className="text-xs text-gray-500">Correct Answer:</label>
                   <input
                     type="text"
                     value={q.correctAnswer as string}
@@ -267,40 +326,26 @@ export function CreateQuizScreen() {
                       setQuestions(newQuestions);
                     }}
                     placeholder="Enter correct answer..."
-                    className="w-full px-4 py-2 bg-green-50 rounded-xl outline-none focus:ring-2 focus:ring-green-500 text-sm"
+                    className="w-full px-4 py-2 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               )}
 
               {q.type === "essay" && (
-                <div className="bg-purple-50 p-3 rounded-xl">
-                  <p className="text-xs text-purple-700">Essay questions will be graded manually</p>
+                <div className="p-3 bg-blue-50 text-blue-800 text-sm rounded-xl">
+                  Essay answers will be graded manually by the creator.
                 </div>
               )}
             </div>
           ))}
         </div>
 
-        <div className="flex gap-3 pt-4">
-          <button
-            onClick={() => {
-              if (!isGuest && visibility === "private" && passcode && title) {
-                addPrivateQuizPin({ id: Date.now().toString(), title, pin: passcode });
-              }
-              navigate("/home");
-            }}
-            className="flex-1 bg-white text-gray-700 py-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
-          >
-            {isGuest ? "Save Locally" : "Save & Upload"}
-          </button>
-          <button
-            onClick={() => navigate("/offline-sharing")}
-            className="flex-1 bg-gradient-to-r from-blue-500 to-green-400 text-white py-4 rounded-2xl shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center gap-2"
-          >
-            <Share2 className="w-5 h-5" />
-            Share Offline
-          </button>
-        </div>
+        <button
+          onClick={handleSaveQuiz}
+          className="w-full py-4 bg-green-500 text-white rounded-2xl font-semibold shadow-lg hover:bg-green-600 transition-colors"
+        >
+          Save Quiz to Database
+        </button>
       </div>
     </div>
   );
